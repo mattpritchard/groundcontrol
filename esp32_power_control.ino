@@ -4,7 +4,7 @@
 
 // Replace with your network credentials (if in Station mode)
 const char* ssid = "ESP32_AP";
-const char* password = "password123";
+const char* password = "placeholder";
 
 // Pins
 const int mosfetPin = 5; // GPIO pin to control MOSFET
