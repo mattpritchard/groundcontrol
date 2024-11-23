@@ -1,6 +1,6 @@
 # Remote Power Control System with ESP32
 
-This project enables remote power control and monitoring for devices using an ESP32 microcontroller. The system is designed to operate in **Access Point (AP) mode**, providing a direct Wi-Fi connection for a smartphone or other device to control the system through a web interface.
+This project enables remote power control and monitoring for devices using an ESP32 microcontroller. Specificaly, it was designed to remotely power on a camera system embedded in the avionics bay of a high power model rocket. The system is designed to operate in **Access Point (AP) mode**, providing a direct Wi-Fi connection for a smartphone or other device to control the system through a web interface.
 
 ## Features
 - **Remote Power Control**: Toggle power to an external device using a MOSFET controlled by the ESP32.
