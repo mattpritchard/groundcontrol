@@ -43,5 +43,3 @@ The ESP32 hosts a lightweight web server accessible through the IP `192.168.4.1`
 - **Voltage Divider**: Ensure the resistor values match your voltage input to scale correctly.
 
 ---
-
-Feel free to adjust this summary to fit your specific repository! Let me know if you'd like to refine it further.
