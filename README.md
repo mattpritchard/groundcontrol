@@ -46,5 +46,5 @@ The root (`/`) serves a mobile-friendly control panel with buttons to access the
    - Use the control panel to power the device ON/OFF or check the voltage.
 
 ## Future Improvements
-- Add authentication for web interface security.
 - Expand the control panel to support multiple devices.
+- 
