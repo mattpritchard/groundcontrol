@@ -1,45 +1,43 @@
-# Remote Power Control System with ESP32
+ESP32 Power Control and Monitoring System
+This project uses an Adafruit ESP32 Feather V2 to remotely control and monitor the power to a device like a RunCam via Wi-Fi. The system is designed to operate in Access Point (AP) mode, providing a mobile-friendly web interface for control and monitoring.
 
-This project enables remote power control and monitoring for devices using an ESP32 microcontroller. Specificaly, it was designed to remotely power on a camera system embedded in the avionics bay of a high power model rocket. The system is designed to operate in **Access Point (AP) mode**, providing a direct Wi-Fi connection for a smartphone or other device to control the system through a web interface.
+Features
+Remote Power Control: Use a MOSFET to switch power to the connected device on or off.
+Real-Time Monitoring: Read and display the voltage at the output using a voltage divider and the ESP32's ADC pin.
+Responsive Web Interface: Simple, mobile-friendly control panel accessible via a web browser.
+Components
+Adafruit ESP32 Feather V2: Handles Wi-Fi connectivity and control logic.
+MOSFET (e.g., IRLZ44N): Used for switching power to the device.
+Voltage Divider: Scales the monitored voltage to a safe level for the ESP32 ADC.
+Web Interface
+The ESP32 hosts a web server accessible at http://192.168.4.1 after connecting to its Wi-Fi network (groundcontrol). The following routes are available:
 
-## Features
-- **Remote Power Control**: Toggle power to an external device using a MOSFET controlled by the ESP32.
-- **Real-Time Voltage Monitoring**: Read and display the output voltage using an ADC pin.
-- **Web Interface**: Simple HTML-based interface to send commands and view status.
+/power_on: Turns the connected device ON.
+/power_off: Turns the connected device OFF.
+/status: Reads and displays the monitored voltage.
+The root (/) serves a mobile-friendly control panel with buttons to access the above routes.
 
-## Web Interface Routes
-The ESP32 hosts a lightweight web server accessible through the IP `192.168.4.1`. The following routes are available:
-
-1. **`/power_on`**  
-   - Description: Turns the connected device ON by setting the MOSFET gate HIGH.
-   - Response: Plain text confirmation (`"Power ON"`).
-
-2. **`/power_off`**  
-   - Description: Turns the connected device OFF by setting the MOSFET gate LOW.
-   - Response: Plain text confirmation (`"Power OFF"`).
-
-3. **`/status`**  
-   - Description: Reads the current voltage from the connected device and returns the value.
-   - Response: Plain text with the voltage reading (e.g., `"Voltage: 5.12V"`).
-
-## Setup Instructions
-1. **Power the ESP32**: Connect a 2S LiPo battery to the Adafruit ESP32 Feather V2’s JST connector.
-2. **Connect to the Wi-Fi Network**:
-   - Network Name: `ESP32_AP`
-   - Password: `password123` (default in the code, can be changed).
-3. **Access the Web Interface**:
-   - Open a web browser on your smartphone or laptop.
-   - Navigate to `http://192.168.4.1`.
-
-## Code Overview
-- The ESP32 creates a Wi-Fi Access Point using `WiFi.softAP(ssid, password)`.
-- A web server listens for requests on the defined routes.
-- GPIO 5 is configured to control the MOSFET for switching power.
-- An ADC pin (default: GPIO 32) reads voltage via a voltage divider.
-
-## Customization
-- **Wi-Fi Credentials**: Update the `ssid` and `password` variables in the code.
-- **GPIO Pins**: Modify the `mosfetPin` or `voltagePin` variables as needed.
-- **Voltage Divider**: Ensure the resistor values match your voltage input to scale correctly.
-
----
+Circuit Summary
+Power Supply:
+Use a buck converter to step down a 7.4V or 11.1V battery to 5V.
+Connect the buck converter output to the Feather’s USB pin for power.
+MOSFET:
+Gate: GPIO 5 (with an optional 220Ω resistor).
+Drain: Device negative terminal.
+Source: Ground.
+Voltage Divider:
+Resistor 1: 100kΩ (connect to the device positive terminal).
+Resistor 2: 10kΩ (connect to ground).
+ADC Output: Connect the junction of the resistors to GPIO 32 (A4).
+How to Use
+Upload the Code:
+Use the Arduino IDE to upload the provided sketch to the ESP32.
+Connect to the ESP32:
+Wi-Fi SSID: groundcontrol
+Password: password123
+Access the Web Interface:
+Open a browser and navigate to http://192.168.4.1.
+Use the control panel to power the device ON/OFF or check the voltage.
+Future Improvements
+Add authentication for web interface security.
+Expand the control panel to support multiple devices.
