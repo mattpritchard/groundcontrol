@@ -1,14 +1,14 @@
-
+// Full ESP32 Sketch with Updates for Power Control and Monitoring
 #include <WiFi.h>
 #include <WebServer.h>
 
 // Replace with your network credentials (if in Station mode)
-const char* ssid = "ESP32_AP";
-const char* password = "placeholder";
+const char* ssid = "groundcontrol";
+const char* password = "password123";
 
 // Pins
 const int mosfetPin = 5; // GPIO pin to control MOSFET
-const int voltagePin = 34; // Analog pin for voltage monitoring
+const int voltagePin = 32; // Analog pin for voltage monitoring (A4 on Feather)
 
 // Web server running on port 80
 WebServer server(80);
@@ -21,19 +21,37 @@ float readVoltage() {
   return voltage;
 }
 
-// Power ON handler
+// Handlers for Web Server
+void handleRoot() {
+  String html = "<html><head><title>Ground Control</title>";
+  html += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+  html += "<style>";
+  html += "body { font-family: Arial, sans-serif; text-align: center; padding: 20px; margin: 0; }";
+  html += "h1 { color: #333; font-size: 24px; margin-bottom: 20px; }";
+  html += "a { display: block; margin: 10px auto; padding: 15px 25px; font-size: 18px; "
+         "text-decoration: none; color: white; background-color: #007BFF; border-radius: 5px; "
+         "max-width: 300px; }";
+  html += "a:hover { background-color: #0056b3; }";
+  html += "</style>";
+  html += "</head><body>";
+  html += "<h1>Ground Control</h1>";
+  html += "<a href=\"/power_on\">Turn Power ON</a>";
+  html += "<a href=\"/power_off\">Turn Power OFF</a>";
+  html += "<a href=\"/status\">Check Voltage Status</a>";
+  html += "</body></html>";
+  server.send(200, "text/html", html);
+}
+
 void handlePowerOn() {
   digitalWrite(mosfetPin, HIGH);
   server.send(200, "text/plain", "Power ON");
 }
 
-// Power OFF handler
 void handlePowerOff() {
   digitalWrite(mosfetPin, LOW);
   server.send(200, "text/plain", "Power OFF");
 }
 
-// Voltage status handler
 void handleStatus() {
   float voltage = readVoltage();
   String response = "Voltage: " + String(voltage) + "V";
@@ -53,6 +71,7 @@ void setup() {
   Serial.println("Wi-Fi Access Point started");
 
   // Define server routes
+  server.on("/", handleRoot);
   server.on("/power_on", handlePowerOn);
   server.on("/power_off", handlePowerOff);
   server.on("/status", handleStatus);
